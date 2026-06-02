@@ -1,3 +1,10 @@
+<img width="1405" height="936" alt="Screenshot 2026-06-02 at 11 50 10 PM" src="https://github.com/user-attachments/assets/8bb1dc3a-3091-478a-9366-ea4426c184c3" />
+
+<img width="1500" height="528" alt="Screenshot 2026-06-02 at 11 50 38 PM" src="https://github.com/user-attachments/assets/1146e6ec-1113-4bee-ab1a-0d2e26f38e89" />
+
+<img width="1140" height="875" alt="Screenshot 2026-06-02 at 11 50 27 PM" src="https://github.com/user-attachments/assets/496c682b-22d3-4944-9746-52f84fe76d3f" />
+
+
 # Support Ticket & Inventory Issue Tracker
 
 An internal support ticket management system for a software company that handles ERP, healthcare, e-commerce, and integration projects. Team members can log client issues, assign priorities, track statuses, link affected modules, add comments, and view summaries across the team.
