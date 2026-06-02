@@ -16,20 +16,20 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="border-b bg-white">
+    <nav className="border-b bg-white shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-14 items-center">
-          <div className="flex items-center gap-6">
-            <span className="font-semibold text-gray-900">Support Tracker</span>
+          <div className="flex items-center gap-8">
+            <span className="font-bold text-gray-900 tracking-tight">Support Tracker</span>
             <div className="flex gap-1">
               {links.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
+                  className={`px-4 py-1.5 rounded-md text-sm font-semibold transition-colors ${
                     pathname === link.href
-                      ? "bg-gray-100 text-gray-900"
-                      : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                      ? "bg-blue-600 text-white shadow-sm"
+                      : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
                   }`}
                 >
                   {link.label}

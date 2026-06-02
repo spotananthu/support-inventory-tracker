@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/db";
 import { TicketStatus, Priority } from "@prisma/client";
+import { isOverdue } from "@/services/ticketService";
 
 export async function getDashboardStats() {
   const now = new Date();
@@ -88,11 +89,7 @@ export async function getDashboardStats() {
     })),
     recentTickets: recentTickets.map((t) => ({
       ...t,
-      isOverdue:
-        t.dueDate !== null &&
-        t.dueDate < now &&
-        t.status !== TicketStatus.RESOLVED &&
-        t.status !== TicketStatus.CLOSED,
+      isOverdue: isOverdue(t),
     })),
   };
 }

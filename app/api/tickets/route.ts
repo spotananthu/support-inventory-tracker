@@ -23,6 +23,7 @@ export async function POST(req: NextRequest) {
   try {
     const session = await auth();
     if (!session) return apiError("Unauthorised", 401);
+    if (session.user.role !== "ADMIN") return apiError("Forbidden", 403);
 
     const body = await req.json();
     const data = createTicketSchema.parse(body);

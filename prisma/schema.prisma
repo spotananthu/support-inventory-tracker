@@ -57,7 +57,7 @@ model User {
 model Client {
   id           String       @id @default(cuid())
   name         String
-  contactEmail String
+  contactEmail String       @unique
   status       ClientStatus @default(ACTIVE)
   createdAt    DateTime     @default(now())
 
@@ -79,14 +79,18 @@ model Ticket {
   deletedAt   DateTime?
 
   clientId   String
-  client     Client  @relation(fields: [clientId], references: [id])
+  client     Client  @relation(fields: [clientId], references: [id], onDelete: Restrict)
 
   assignedTo   String?
-  engineer     User?   @relation("AssignedEngineer", fields: [assignedTo], references: [id])
+  engineer     User?   @relation("AssignedEngineer", fields: [assignedTo], references: [id], onDelete: SetNull)
 
   comments  Comment[]
   auditLogs AuditLog[]
 
+  @@index([clientId])
+  @@index([assignedTo])
+  @@index([status, deletedAt])
+  @@index([priority, deletedAt])
   @@map("tickets")
 }
 
@@ -99,7 +103,7 @@ model Comment {
   ticket   Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
 
   authorId String
-  author   User   @relation(fields: [authorId], references: [id])
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Restrict)
 
   @@map("comments")
 }
@@ -115,7 +119,7 @@ model AuditLog {
   ticket   Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
 
   userId String
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Restrict)
 
   @@map("audit_logs")
 }

@@ -7,15 +7,3 @@ export async function getAuditLogs(ticketId: string) {
     orderBy: { createdAt: "desc" },
   });
 }
-
-export async function createAuditEntry(
-  ticketId: string,
-  userId: string,
-  field: string,
-  oldValue: string,
-  newValue: string
-) {
-  return prisma.auditLog.create({
-    data: { ticketId, userId, field, oldValue, newValue },
-  });
-}

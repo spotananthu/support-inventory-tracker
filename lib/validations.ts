@@ -33,6 +33,7 @@ export const ticketFiltersSchema = z.object({
   priority: z.enum(["LOW", "MEDIUM", "HIGH", "CRITICAL"]).optional(),
   clientId: z.string().optional(),
   assignedTo: z.string().optional(),
+  overdue: z.coerce.boolean().optional(),
   sortBy: z.enum(["createdAt", "dueDate", "priority"]).default("createdAt"),
   sortOrder: z.enum(["asc", "desc"]).default("desc"),
 });

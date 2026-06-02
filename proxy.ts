@@ -7,7 +7,8 @@ export default auth((req) => {
 
   const isPublic =
     pathname.startsWith("/login") ||
-    pathname.startsWith("/api/auth");
+    pathname.startsWith("/api/auth") ||
+    pathname.startsWith("/api/tickets/export");
 
   if (!isLoggedIn && !isPublic) {
     if (pathname.startsWith("/api/")) {
