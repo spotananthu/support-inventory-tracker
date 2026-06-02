@@ -1,13 +1,121 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
-  provider = "prisma-client"
-  output   = "../lib/generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
+}
+
+enum Role {
+  ADMIN
+  ENGINEER
+}
+
+enum ClientStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  WAITING_ON_CLIENT
+  RESOLVED
+  CLOSED
+}
+
+enum Module {
+  ERP
+  HEALTHCARE
+  ECOMMERCE
+  INTEGRATION
+  OTHER
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         Role     @default(ENGINEER)
+  createdAt    DateTime @default(now())
+
+  assignedTickets Ticket[]   @relation("AssignedEngineer")
+  comments        Comment[]
+  auditLogs       AuditLog[]
+
+  @@map("users")
+}
+
+model Client {
+  id           String       @id @default(cuid())
+  name         String
+  contactEmail String
+  status       ClientStatus @default(ACTIVE)
+  createdAt    DateTime     @default(now())
+
+  tickets Ticket[]
+
+  @@map("clients")
+}
+
+model Ticket {
+  id          String       @id @default(cuid())
+  title       String
+  description String
+  priority    Priority     @default(MEDIUM)
+  status      TicketStatus @default(OPEN)
+  module      Module       @default(OTHER)
+  dueDate     DateTime?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  deletedAt   DateTime?
+
+  clientId   String
+  client     Client  @relation(fields: [clientId], references: [id])
+
+  assignedTo   String?
+  engineer     User?   @relation("AssignedEngineer", fields: [assignedTo], references: [id])
+
+  comments  Comment[]
+  auditLogs AuditLog[]
+
+  @@map("tickets")
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  message   String
+  createdAt DateTime @default(now())
+
+  ticketId String
+  ticket   Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id])
+
+  @@map("comments")
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  field     String
+  oldValue  String
+  newValue  String
+  createdAt DateTime @default(now())
+
+  ticketId String
+  ticket   Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@map("audit_logs")
 }
