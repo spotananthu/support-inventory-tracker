@@ -53,7 +53,7 @@ App runs at **http://localhost:3000**
 
 ```env
 DATABASE_URL="postgresql://postgres:postgres@localhost:5432/support_tracker?schema=public"
-NEXTAUTH_SECRET="your-random-secret-here"
+NEXTAUTH_SECRET="your-secret-here"
 NEXTAUTH_URL="http://localhost:3000"
 ```
 
@@ -205,3 +205,11 @@ All endpoints require authentication via session cookie. Log in at `/login` firs
 ## Approximate Time Spent
 
 ~12–14 hours across planning, backend, frontend, testing, and polish.
+
+---
+
+## AI Usage Declaration
+
+AI tooling was used to assist with documentation writing and generating boilerplate code (initial project scaffold, shadcn/ui component setup).
+
+
