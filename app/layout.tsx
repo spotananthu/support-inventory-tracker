@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans } from "next/font/google";
+import { IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";
 import { SessionProvider } from "next-auth/react";
 
-const jakarta = Plus_Jakarta_Sans({
+const ibmPlex = IBM_Plex_Sans({
   subsets: ["latin"],
-  variable: "--font-jakarta",
+  variable: "--font-ibm",
   weight: ["400", "500", "600", "700"],
 });
 
@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${jakarta.variable} h-full antialiased font-sans`}
+      className={`${ibmPlex.variable} h-full antialiased font-sans dark`}
     >
       <body className="min-h-full flex flex-col font-sans">
         <SessionProvider>{children}</SessionProvider>

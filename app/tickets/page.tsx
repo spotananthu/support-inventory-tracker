@@ -44,16 +44,16 @@ export default async function TicketsPage({
   const isAdmin = session.user.role === "ADMIN";
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       <Navbar />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">Tickets</h1>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-3">
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-200 to-blue-400 bg-clip-text text-transparent">Tickets</h1>
           <div className="flex gap-2">
             <ExportCsvButton />
             {isAdmin && (
               <Link href="/tickets/new">
-                <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 h-9 shadow-sm">
+                <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold px-4 h-9 shadow-sm">
                   + New Ticket
                 </Button>
               </Link>
@@ -65,67 +65,61 @@ export default async function TicketsPage({
           <TicketFilters clients={clients} engineers={engineers} />
         </div>
 
-        <div className="bg-white rounded-lg border overflow-hidden">
+        <div className="bg-card rounded-lg border border-border overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
-              <thead className="bg-gray-50 border-b">
+              <thead className="bg-muted/50 border-b border-border">
                 <tr>
-                  <th className="px-4 py-3 text-left font-medium text-gray-600">Title</th>
-                  <th className="px-4 py-3 text-left font-medium text-gray-600">Client</th>
-                  <th className="px-4 py-3 text-left font-medium text-gray-600">Status</th>
-                  <th className="px-4 py-3 text-left font-medium text-gray-600">Priority</th>
-                  <th className="px-4 py-3 text-left font-medium text-gray-600">Module</th>
-                  <th className="px-4 py-3 text-left font-medium text-gray-600">Assigned To</th>
-                  <th className="px-4 py-3 text-left font-medium text-gray-600">Due Date</th>
+                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">Title</th>
+                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">Client</th>
+                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">Status</th>
+                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">Priority</th>
+                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">Module</th>
+                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">Assigned To</th>
+                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">Due Date</th>
                 </tr>
               </thead>
               <tbody>
                 {tickets.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="px-4 py-12 text-center text-gray-500">
+                    <td colSpan={7} className="px-4 py-12 text-center text-muted-foreground">
                       No tickets found.
                     </td>
                   </tr>
                 ) : (
                   tickets.map((ticket) => (
-                    <tr key={ticket.id} className="border-b last:border-0 hover:bg-gray-50 transition-colors">
+                    <tr key={ticket.id} className="border-b border-border last:border-0 hover:bg-muted/40 transition-colors">
                       <td className="px-4 py-3">
                         <Link
                           href={`/tickets/${ticket.id}`}
-                          className="text-blue-600 hover:underline font-medium"
+                          className="text-primary hover:underline font-medium"
                         >
-                          {ticket.title.length > 55
-                            ? ticket.title.slice(0, 55) + "…"
-                            : ticket.title}
+                          {ticket.title.length > 55 ? ticket.title.slice(0, 55) + "…" : ticket.title}
                         </Link>
                         {ticket.isOverdue && (
-                          <span className="ml-2 text-xs text-red-600 font-medium">Overdue</span>
+                          <span className="ml-2 text-xs text-red-400 font-medium">Overdue</span>
                         )}
                       </td>
-                      <td className="px-4 py-3 text-gray-600">
+                      <td className="px-4 py-3 text-muted-foreground">
                         {(ticket.client as any)?.name ?? "—"}
                       </td>
-                      <td className="px-4 py-3">
-                        <StatusBadge status={ticket.status} />
-                      </td>
-                      <td className="px-4 py-3">
-                        <PriorityBadge priority={ticket.priority} />
-                      </td>
-                      <td className="px-4 py-3 text-gray-600 capitalize">
+                      <td className="px-4 py-3"><StatusBadge status={ticket.status} /></td>
+                      <td className="px-4 py-3"><PriorityBadge priority={ticket.priority} /></td>
+                      <td className="px-4 py-3 text-muted-foreground capitalize">
                         {ticket.module.charAt(0) + ticket.module.slice(1).toLowerCase()}
                       </td>
-                      <td className="px-4 py-3 text-gray-600">
+                      <td className="px-4 py-3 text-muted-foreground">
                         {(ticket.engineer as any)?.name ?? (
-                          <span className="text-gray-400 italic">Unassigned</span>
+                          <span className="text-muted-foreground/50 italic">Unassigned</span>
                         )}
                       </td>
                       <td className="px-4 py-3">
                         {ticket.dueDate ? (
-                          <span className={ticket.isOverdue ? "text-red-600 font-medium" : "text-gray-600"}>
+                          <span className={ticket.isOverdue ? "text-red-400 font-medium" : "text-muted-foreground"}>
                             {new Date(ticket.dueDate).toLocaleDateString("en-IN")}
                           </span>
                         ) : (
-                          <span className="text-gray-400">—</span>
+                          <span className="text-muted-foreground/50">—</span>
                         )}
                       </td>
                     </tr>

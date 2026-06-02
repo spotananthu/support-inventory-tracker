@@ -48,13 +48,13 @@ export default function InlineTicketControls({
   return (
     <div className="space-y-4">
       <div className="space-y-1.5">
-        <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">Status</span>
+        <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Status</span>
         <div className="flex items-center gap-2">
           <select
             defaultValue={currentStatus}
             onChange={(e) => update("status", e.target.value)}
             disabled={isPending}
-            className="flex-1 h-8 rounded border border-input bg-background px-2 text-sm"
+            className="flex-1 h-8 rounded border border-input bg-background text-foreground px-2 text-sm"
           >
             {STATUSES.map((s) => (
               <option key={s} value={s}>
@@ -67,13 +67,13 @@ export default function InlineTicketControls({
       </div>
 
       <div className="space-y-1.5">
-        <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">Priority</span>
+        <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Priority</span>
         <div className="flex items-center gap-2">
           <select
             defaultValue={currentPriority}
             onChange={(e) => update("priority", e.target.value)}
             disabled={isPending || !isAdmin}
-            className="flex-1 h-8 rounded border border-input bg-background px-2 text-sm disabled:opacity-50"
+            className="flex-1 h-8 rounded border border-input bg-background text-foreground px-2 text-sm disabled:opacity-50"
           >
             {PRIORITIES.map((p) => (
               <option key={p} value={p}>
@@ -87,12 +87,12 @@ export default function InlineTicketControls({
 
       {isAdmin && (
         <div className="space-y-1.5">
-          <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">Assigned Engineer</span>
+          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Assigned Engineer</span>
           <select
             defaultValue={currentAssignedTo}
             onChange={(e) => update("assignedTo", e.target.value)}
             disabled={isPending}
-            className="w-full h-8 rounded border border-input bg-background px-2 text-sm"
+            className="w-full h-8 rounded border border-input bg-background text-foreground px-2 text-sm"
           >
             <option value="">Unassigned</option>
             {engineers.map((e) => (
@@ -104,8 +104,8 @@ export default function InlineTicketControls({
         </div>
       )}
 
-      {error && <p className="text-xs text-red-600">{error}</p>}
-      {isPending && <p className="text-xs text-gray-400">Saving...</p>}
+      {error && <p className="text-xs text-red-400">{error}</p>}
+      {isPending && <p className="text-xs text-muted-foreground">Saving...</p>}
     </div>
   );
 }

@@ -50,7 +50,7 @@ export default function AddCommentForm({ ticketId }: Props) {
         rows={3}
         disabled={isPending}
       />
-      {error && <p className="text-xs text-red-600">{error}</p>}
+      {error && <p className="text-xs text-red-400">{error}</p>}
       <Button type="submit" size="sm" disabled={isPending || !message.trim()}>
         {isPending ? "Posting..." : "Post Comment"}
       </Button>

@@ -26,7 +26,7 @@ export default function Pagination({ page, totalPages, total, limit }: Props) {
 
   return (
     <div className="flex items-center justify-between">
-      <p className="text-sm text-gray-600">
+      <p className="text-sm text-muted-foreground">
         Showing {total === 0 ? 0 : from}–{to} of {total} tickets
       </p>
       <div className="flex gap-2">
@@ -38,7 +38,7 @@ export default function Pagination({ page, totalPages, total, limit }: Props) {
         >
           Previous
         </Button>
-        <span className="flex items-center px-3 text-sm text-gray-600">
+        <span className="flex items-center px-3 text-sm text-muted-foreground">
           Page {page} of {totalPages || 1}
         </span>
         <Button

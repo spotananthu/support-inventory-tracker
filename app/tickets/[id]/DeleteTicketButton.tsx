@@ -27,14 +27,14 @@ export default function DeleteTicketButton({ ticketId }: Props) {
   if (confirming) {
     return (
       <div className="flex items-center gap-2">
-        <span className="text-sm text-gray-600">Are you sure?</span>
+        <span className="text-sm text-muted-foreground">Are you sure?</span>
         <Button size="sm" variant="destructive" onClick={handleDelete} disabled={isPending}>
           {isPending ? "Deleting..." : "Yes, delete"}
         </Button>
         <Button size="sm" variant="outline" onClick={() => setConfirming(false)} disabled={isPending}>
           Cancel
         </Button>
-        {error && <p className="text-xs text-red-600">{error}</p>}
+        {error && <p className="text-xs text-red-400">{error}</p>}
       </div>
     );
   }

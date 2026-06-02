@@ -5,6 +5,21 @@ import { useCallback, useTransition } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
+function Select({ value, onChange, children, className }: { value: string; onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void; children: React.ReactNode; className?: string }) {
+  return (
+    <div className="relative w-full sm:w-auto">
+      <select value={value} onChange={onChange} className={className}>
+        {children}
+      </select>
+      <span className="pointer-events-none absolute inset-y-0 right-2.5 flex items-center text-muted-foreground">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path d="M2 4l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </span>
+    </div>
+  );
+}
+
 const STATUSES = [
   { value: "", label: "All Statuses" },
   { value: "OPEN", label: "Open" },
@@ -59,8 +74,10 @@ export default function TicketFilters({ clients, engineers }: Props) {
 
   const currentSort = `${searchParams.get("sortBy") ?? "createdAt"}:${searchParams.get("sortOrder") ?? "desc"}`;
 
+  const selectClass = "h-9 w-full sm:w-auto rounded-md border border-input bg-background text-foreground px-3 pr-8 py-1 text-sm appearance-none cursor-pointer";
+
   return (
-    <div className={`flex flex-col sm:flex-row gap-3 flex-wrap ${isPending ? "opacity-60" : ""}`}>
+    <div className={`flex flex-col sm:flex-row gap-2 flex-wrap ${isPending ? "opacity-60" : ""}`}>
       <Input
         placeholder="Search tickets..."
         defaultValue={searchParams.get("search") ?? ""}
@@ -69,52 +86,28 @@ export default function TicketFilters({ clients, engineers }: Props) {
           const timer = setTimeout(() => updateParam("search", val), 400);
           return () => clearTimeout(timer);
         }}
-        className="sm:w-64"
+        className="w-full sm:w-64"
       />
 
-      <select
-        value={searchParams.get("status") ?? ""}
-        onChange={(e) => updateParam("status", e.target.value)}
-        className="h-9 rounded-md border border-input bg-background px-3 py-1 text-sm"
-      >
-        {STATUSES.map((s) => (
-          <option key={s.value} value={s.value}>{s.label}</option>
-        ))}
-      </select>
+      <Select value={searchParams.get("status") ?? ""} onChange={(e) => updateParam("status", e.target.value)} className={selectClass}>
+        {STATUSES.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
+      </Select>
 
-      <select
-        value={searchParams.get("priority") ?? ""}
-        onChange={(e) => updateParam("priority", e.target.value)}
-        className="h-9 rounded-md border border-input bg-background px-3 py-1 text-sm"
-      >
-        {PRIORITIES.map((p) => (
-          <option key={p.value} value={p.value}>{p.label}</option>
-        ))}
-      </select>
+      <Select value={searchParams.get("priority") ?? ""} onChange={(e) => updateParam("priority", e.target.value)} className={selectClass}>
+        {PRIORITIES.map((p) => <option key={p.value} value={p.value}>{p.label}</option>)}
+      </Select>
 
-      <select
-        value={searchParams.get("clientId") ?? ""}
-        onChange={(e) => updateParam("clientId", e.target.value)}
-        className="h-9 rounded-md border border-input bg-background px-3 py-1 text-sm"
-      >
+      <Select value={searchParams.get("clientId") ?? ""} onChange={(e) => updateParam("clientId", e.target.value)} className={selectClass}>
         <option value="">All Clients</option>
-        {clients.map((c) => (
-          <option key={c.id} value={c.id}>{c.name}</option>
-        ))}
-      </select>
+        {clients.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
+      </Select>
 
-      <select
-        value={searchParams.get("assignedTo") ?? ""}
-        onChange={(e) => updateParam("assignedTo", e.target.value)}
-        className="h-9 rounded-md border border-input bg-background px-3 py-1 text-sm"
-      >
+      <Select value={searchParams.get("assignedTo") ?? ""} onChange={(e) => updateParam("assignedTo", e.target.value)} className={selectClass}>
         <option value="">All Engineers</option>
-        {engineers.map((e) => (
-          <option key={e.id} value={e.id}>{e.name}</option>
-        ))}
-      </select>
+        {engineers.map((e) => <option key={e.id} value={e.id}>{e.name}</option>)}
+      </Select>
 
-      <select
+      <Select
         value={currentSort}
         onChange={(e) => {
           const [sortBy, sortOrder] = e.target.value.split(":");
@@ -124,31 +117,20 @@ export default function TicketFilters({ clients, engineers }: Props) {
           params.delete("page");
           startTransition(() => router.push(`${pathname}?${params.toString()}`));
         }}
-        className="h-9 rounded-md border border-input bg-background px-3 py-1 text-sm"
+        className={selectClass}
       >
-        {SORT_OPTIONS.map((o) => (
-          <option key={o.value} value={o.value}>{o.label}</option>
-        ))}
-      </select>
+        {SORT_OPTIONS.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+      </Select>
 
       {searchParams.get("overdue") === "true" && (
-        <div className="flex items-center h-9 px-3 rounded-md border border-red-300 bg-red-50 text-red-700 text-sm gap-2">
+        <div className="flex items-center h-9 px-3 rounded-md border border-red-500/30 bg-red-500/10 text-red-400 text-sm gap-2">
           <span>Overdue only</span>
-          <button
-            onClick={() => updateParam("overdue", "")}
-            className="font-bold hover:text-red-900"
-          >
-            ×
-          </button>
+          <button onClick={() => updateParam("overdue", "")} className="font-bold hover:text-red-300">×</button>
         </div>
       )}
 
       {Array.from(searchParams.keys()).filter(k => !["page","limit"].includes(k)).length > 0 && (
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => startTransition(() => router.push(pathname))}
-        >
+        <Button variant="ghost" size="sm" onClick={() => startTransition(() => router.push(pathname))}>
           Clear filters
         </Button>
       )}
